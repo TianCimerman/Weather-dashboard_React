@@ -10,7 +10,7 @@ if (!global.weatherStore) {
 export const weatherStore = global.weatherStore;
 
 export async function fetchWeatherAndSensors() {
-  console.log("🔄 Background Fetching: InfluxDB + OpenWeather...");
+
   try {
     const apiKey = process.env.WEATHER_API_KEY;
     const influxToken = process.env.INFLUX_TOKEN;
@@ -61,7 +61,7 @@ export async function fetchWeatherAndSensors() {
         },
     };
     
-    console.log("✅ Data cached in GLOBAL store at " + global.weatherStore.cachedData.lastUpdated);
+
   } catch (err) {
     console.error("❌ Fetch failed:", err.message);
   }

@@ -10,6 +10,6 @@ export async function GET() {
     return NextResponse.json({ error: "Server warming up..." }, { status: 503 });
   }
 
-  console.log("🟢 API power successfully served data from Global Store");
+
   return NextResponse.json(data);
 }
