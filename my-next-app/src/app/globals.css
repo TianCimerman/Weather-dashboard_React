@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #303946;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  overflow-y: auto;   /* allow vertical scroll */
+  overflow-x: hidden; /* block horizontal scroll */
+}
+
+@media (max-width: 639px) {
+  body {
+    overflow-y: auto;
+    overflow-x: hidden;
+    color: white;
+  }
+}
+#custom-gauge {
+  z-index: 0;
+}
+
+
+#custom-gauge text {
+  font-size: 20px;
+  font-weight: bold;
+  transform: translateY(20px);
+  z-index: 1;
+}
+
+/* Smaller text on small screens */
+@media (max-width: 639px) {
+  #custom-gauge text {
+    font-size: 1.8rem;
+    transform: translateY(0px);
+  }
+}
