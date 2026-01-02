@@ -12,6 +12,13 @@ app.use(express.json());
 async function autoLogin(password = 'helios') {
   console.log('[AutoLogin] Starting login process...');
 
+//Raspbia version
+//const browser = await puppeteer.launch({
+//  executablePath: '/usr/bin/chromium-browser',
+//  headless: true,
+//}); 
+
+//Windows / standard version
   const browser = await puppeteer.launch({
     headless: true, // set to false for debugging
     args: ['--no-sandbox', '--disable-setuid-sandbox']
