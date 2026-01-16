@@ -23,30 +23,35 @@ function App() {
 
 
   return (
-<div className="min-h-screen bg-[#303946] mt-[0rem] pt-5 pl-16 hss:pt-0 hss:pl-0 sl:p-0" >
+    <div className="h-screen w-screen bg-[#303946] flex overflow-hidden">
+      {/* MAIN CONTENT (left) */}
+      <div className="flex-1 h-full overflow-hidden">
+        <div className="h-full overflow-y-auto pt-5 pl-16 hss:pt-0 hss:pl-0 sl:p-0">
+          <div className="flex flex-col md:flex-row items-start gap-5 hss:ml-5 sl:ml-0">
+            <WeatherWidget />
+            <div className="md:mt-[2.4rem] md:ml-[-4rem] sl:hidden">
+              <Time />
+            </div>
+          </div>
 
-  <div className=" flex flex-col md:flex-row items-start  gap-5 hss:ml-5 sl:ml-0  ">
-    <WeatherWidget/>
-    <div className=" md:mt-[2.4rem] md:ml-[-4rem] sl:hidden  ">
-      <Time />
-    </div>
-  </div>
+          {/* Inside Temp + Gauge */}
+          <div className="flex flex-col md:flex-row gap-5 mt-4 md:mt-[-1rem] hss:ml-5">
+            <div className="mt-1 md:mt-[-2rem] sl:mt-[-5rem]">
+              <Inside_Temp />
+            </div>
 
-  {/* Inside Temp + Gauge + Navbar */}
-  <div className="flex flex-col md:flex-row gap-5  mt-4 md:mt-[-1rem] hss:ml-5">
-    <div className="mt-1 md:mt-[-2rem] sl:mt-[-5rem]">
-      <Inside_Temp />
-    </div>
-    <div className="mt-[-10.5rem] hss:mt-[-5.3rem]  sl:mt-[-2.5rem] sl:ml-[1rem]">
-      <TemperatureGauge />
-    </div>
-    <div className="w-full md:w-[20rem] mt-2 md:mt-[-8rem]">
-      <Navbar />
-    </div>
-  </div>
-</div>
+            <div className="mt-[-10.5rem] hss:mt-[-5.3rem] sl:mt-[-2.5rem] sl:ml-[1rem]">
+              <TemperatureGauge />
+            </div>
+          </div>
+        </div>
+      </div>
 
-    
+      {/* NAVBAR (right, full height) */}
+      <div className="w-[100px] h-full flex-shrink-0">
+        <Navbar />
+      </div>
+    </div>
   );
 }
 

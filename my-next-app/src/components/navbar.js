@@ -48,27 +48,29 @@ const handleIframeToggle2 = async () => {
 
   return (
     <>
-      <nav className="navbar absolute top-0 right-0 w-[6.5rem] h-full flex justify-between items-center p-4 bg-gray-800 text-white sl:w-[4rem] sl:h-[85%]  " style={{ backgroundColor: 'hsl(218, 46%, 8%)' }}>
-        <ul className="navbar-links flex justify-between items-center h-full flex-col pt-[2.8rem] pb-[2.8rem]">
+      <nav className="w-[6.5rem] h-full flex flex-col items-center justify-between py-20 pr-2 bg-[#0B121E] text-white">
+        <ul className="flex flex-col items-center justify-between h-full">
           <li>
-            <button onClick={() => window.location.reload()} className="hover:text-gray-500 transition duration-300 ease-in-out">
-              <FontAwesomeIcon icon={faHouse} className="text-[3.5rem] sl:text-[2rem] " />
+            <button onClick={() => window.location.reload()} className="hover:text-gray-400">
+              <FontAwesomeIcon icon={faHouse} className="text-[3.2rem]" />
             </button>
           </li>
+
           <li>
-            <button onClick={handleIframeToggle2} className="hover:text-gray-500 transition duration-300 ease-in-out">
-              <FontAwesomeIcon icon={faFan} className="text-[3.5rem] sl:text-[2rem]" />
+            <button onClick={handleIframeToggle2} className="hover:text-gray-400">
+              <FontAwesomeIcon icon={faFan} className="text-[3.2rem]" />
             </button>
           </li>
+
           <li>
-            {/* Toggle iframe visibility when Grafana icon is clicked */}
-            <button onClick={handleIframeToggle} className="hover:text-gray-500 transition duration-300 ease-in-out">
-              <FontAwesomeIcon icon={faChartLine} className="text-[3.5rem] sl:text-[2rem]" />
+            <button onClick={handleIframeToggle} className="hover:text-gray-400">
+              <FontAwesomeIcon icon={faChartLine} className="text-[3.2rem]" />
             </button>
           </li>
+
           <li>
-            <Link href="/feder">
-              <FontAwesomeIcon icon={faPaw} className="text-[3.5rem] sl:text-[2rem]" />
+            <Link href="/feder" className="hover:text-gray-400">
+              <FontAwesomeIcon icon={faPaw} className="text-[3.2rem]" />
             </Link>
           </li>
         </ul>
