@@ -51,9 +51,9 @@ const handleIframeToggle2 = async () => {
       <nav className="w-[6.5rem] h-full flex flex-col items-center justify-between py-20 pr-2 bg-[#0B121E] text-white">
         <ul className="flex flex-col items-center justify-between h-full">
           <li>
-            <button onClick={() => window.location.reload()} className="hover:text-gray-400">
+            <Link href="/" className="hover:text-gray-400">
               <FontAwesomeIcon icon={faHouse} className="text-[3.2rem]" />
-            </button>
+            </Link>
           </li>
 
           <li>
@@ -69,7 +69,7 @@ const handleIframeToggle2 = async () => {
           </li>
 
           <li>
-            <Link href="/feder" className="hover:text-gray-400">
+            <Link href="/feeder" className="hover:text-gray-400">
               <FontAwesomeIcon icon={faPaw} className="text-[3.2rem]" />
             </Link>
           </li>
