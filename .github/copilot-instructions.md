@@ -21,7 +21,7 @@ This is a **Next.js full-stack IoT monitoring dashboard** that displays real-tim
 ## Environment & Setup
 
 ### Configuration Files:
-- **`.env.local`** (required): `INFLUX_TOKEN`, `INFLUX_URL`, `INFLUX_ORG`, `WEATHER_API_KEY`, `NODE_ENV`, `HOST=0.0.0.0`
+- **`.env.local`** (required): `INFLUX_TOKEN`, `INFLUX_URL`, `INFLUX_ORG`, `WEATHER_API_KEY`, `PI_FEEDER_URL` (e.g., `http://192.168.1.160:8080`), `NODE_ENV`, `HOST=0.0.0.0`
 - **`tailwind.config.cjs`** & **`tailwind.config.ts`**: Dual configs; CSS is in `src/app/globals.css`
 - **`tsconfig.json`**: TypeScript config; custom `@/` alias points to `src/`
 
@@ -84,16 +84,40 @@ global.powerStore.cachedData = { value: rows[0]._value, time: rows[0]._time };
 | `src/lib/power_data.js` | Queries InfluxDB for power consumption from SolarEdge inverter |
 | `src/app/api/weather/route.js` | Exposes cached weather data |
 | `src/app/api/power/route.js` | Exposes cached power data |
+| `src/app/api/feeder/status/route.js` | Proxies feeder status from Pi Feeder service |
+| `src/app/api/feeder/feed/route.js` | Proxies POST feed commands to Pi Feeder service |
+| `src/app/api/feeder/schedules/route.js` | Proxies GET/POST schedule operations to Pi Feeder service |
+| `src/app/feeder/page.tsx` | Feeder dashboard page with status and feed controls |
 | `src/components/outside.js` | Displays outdoor temp/humidity from `/api/weather` |
 | `src/components/inside.js` | Displays indoor sensors (supports 2 sensor locations) |
 | `src/components/power.js` | Gauge chart visualization of power consumption |
 | `src/components/navbar.js` | Sidebar navigation (list of metrics) |
+| `src/components_feeder/status.js` | Feeder status component with live connection indicator and feed button |
 | `server/index.js` | Express server for SolarEdge inverter auto-login (Puppeteer) |
+
+## Feeder Subsystem
+
+**Overview**: Pet feeder control via separate Raspberry Pi service. Next.js acts as proxy; all requests forward to `PI_FEEDER_URL` with `force-dynamic` routing.
+
+**Architecture**:
+- `src/app/feeder/page.tsx` → displays feeder dashboard
+- `src/components_feeder/status.js` → polls `/api/feeder/status` every 3s, shows connection status (heartbeat-based, <10s tolerance)
+- Feeder API routes proxy to external service:
+  - **GET** `/api/feeder/status` → returns `{ heartbeat, ... }` 
+  - **POST** `/api/feeder/feed` → body `{ duration: 2000 }` → returns `{ ok: boolean, error?: string }`
+  - **GET/POST** `/api/feeder/schedules` → schedule management
+
+**Key Points**:
+- **Error Handling**: Feed and status routes handle non-JSON responses from Pi (catch and wrap in error message)
+- **Connection Check**: Client-side calculates connection status: `Date.now() - new Date(heartbeat).getTime() < 10000`
+- **Environment**: Requires `PI_FEEDER_URL` (e.g., `http://192.168.1.160:8080`)
+- **Button State**: Feed button disabled when offline or loading
 
 ## Integration Points
 
 - **InfluxDB**: Queries via `@influxdata/influxdb-client` in `src/lib/`; ensure `INFLUX_*` env vars set
 - **OpenWeatherMap API**: Fetched in `fetchWeatherAndSensors()` for external weather; key in `WEATHER_API_KEY`
+- **Pi Feeder Service**: Separate HTTP service (port 8080 on Pi); Next.js proxies requests via `PI_FEEDER_URL` env var
 - **SolarEdge Inverter**: Auto-login via Puppeteer in `server/index.js` (separate from Next.js frontend)
 - **React Toastify**: Toast notifications for voltage warnings in components
 

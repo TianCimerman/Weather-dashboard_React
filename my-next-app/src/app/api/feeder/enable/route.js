@@ -10,12 +10,10 @@ export async function POST(req) {
       );
     }
 
-    const body = await req.json().catch(() => ({}));
-
-    const upstream = await fetch(`${PI}/feed`, {
+    const upstream = await fetch(`${PI}/enable`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
+      body: JSON.stringify({}),
       cache: "no-store",
     });
 
@@ -26,21 +24,6 @@ export async function POST(req) {
       data = JSON.parse(text);
     } catch {
       data = { ok: upstream.ok, error: text || "Non-JSON response from Pi" };
-    }
-
-    if (upstream.status === 409) {
-      return Response.json(
-        {
-          ok: false,
-          error:
-            data?.message ||
-            data?.error ||
-            data?.reason ||
-            "Feeder is busy or feeding already in progress",
-          status: 409,
-        },
-        { status: 200 }
-      );
     }
 
     return Response.json(data, { status: upstream.status });
