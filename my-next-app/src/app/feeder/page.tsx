@@ -4,6 +4,9 @@ import Status from "@/components_feeder/status";
 import Navbar from '@/components/navbar';
 import Header from "@/components_feeder/header";
 import Schedules from "@/components_feeder/scheedules_edit";
+import Logs from "@/components_feeder/logs";
+import Fill from "@/components_feeder/fill";
+
 
 export default function FeederDashboard() {
   return (
@@ -13,12 +16,16 @@ export default function FeederDashboard() {
         <div className="relative z-10 w-full items-center">
           <Header />
         </div>
-        <div className="relative z-10 flex gap-20 h-full overflow-hidden p-6">
+        <div className="relative z-10 flex gap-20 h-full overflow-hidden p-6 hss:gap-10">
           <div className="w-1/4">
             <Status />
           </div>
-          <div className="w-2/6">
+          <div className="w-2/6 gap-6 flex flex-col">
             <Schedules />
+            <Fill />
+          </div>
+          <div className="w-2/6">
+            <Logs />
           </div>
         </div>
 

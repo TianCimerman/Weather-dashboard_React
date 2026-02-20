@@ -219,16 +219,18 @@ export default function SchedulesEdit() {
         border-gray-300
         rounded-[32px]
         p-10
+        hss:p-7
+        hss:w-[425px]
          ">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h2 className="text-white text-2xl font-bold">Schedule Manager</h2>
+        <h2 className="text-white text-2xl font-bold hss:text-xl">Schedule Manager</h2>
         <div className="flex gap-2">
           {!formMode && (
             <>
               <button
                 onClick={handleAddClick}
-                className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 disabled:opacity-50"
+                className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 disabled:opacity-50 hss:px-3 hss:py-1 text-sm"
                 disabled={loading}
               >
                 + Add Schedule
@@ -240,7 +242,7 @@ export default function SchedulesEdit() {
 
       {/* Message */}
       {message && (
-        <div className={`text-white text-center p-3 rounded-lg ${
+        <div className={`text-white text-center p-3 rounded-lg hss:text-sm ${
           message.includes("Cannot POST") ? "bg-red-800" : "bg-gray-700"
         }`}>
           {message}
@@ -255,8 +257,8 @@ export default function SchedulesEdit() {
 
       {/* Form */}
       {formMode && (
-        <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-lg flex flex-col gap-4">
-          <h3 className="text-white text-lg font-semibold">
+        <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-lg flex flex-col gap-4 hss:p-4">
+          <h3 className="text-white text-lg font-semibold md:text-base">
             {formMode === "add" ? "Add New Schedule" : "Edit Schedule"}
           </h3>
 
@@ -282,7 +284,7 @@ export default function SchedulesEdit() {
               onChange={(e) => setFormData({ ...formData, time: e.target.value })}
               placeholder="07:30"
               pattern="\d{2}:\d{2}"
-              className="bg-gray-700 text-white px-3 py-2 rounded"
+              className="bg-gray-700 text-white px-3 py-2 rounded hss:px-2 hss:py-1"
             />
           </div>
 
@@ -361,14 +363,14 @@ export default function SchedulesEdit() {
                 <button
                   onClick={() => handleEditClick(schedule)}
                   disabled={loading || formMode !== null}
-                  className="bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-700 disabled:opacity-50 text-sm"
+                  className="bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-700 disabled:opacity-50 text-sm md:px-2 hss:py-1"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => handleDelete(schedule.id)}
                   disabled={loading || formMode !== null}
-                  className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 disabled:opacity-50 text-sm"
+                  className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 disabled:opacity-50 text-sm md:px-2 hss:py-1"
                 >
                   Delete
                 </button>

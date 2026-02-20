@@ -269,7 +269,10 @@ export default function FeederDashboard() {
         border-gray-300
         rounded-[32px]
         p-10
-        
+        h-[580px]
+        hss:h-[550px]
+        hss:p-7
+        hss:w-[325px]
         bg-transparent
         shadow-[inset_0_0_0_3px_rgba(255,255,255,0.25)]
         flex
@@ -281,19 +284,13 @@ export default function FeederDashboard() {
     >
 
 
-
-
-
-
-
-
-      <div className="w-full px-4">
-        <table className="w-full text-white border border-orange-400 rounded-lg bg-orange-600 bg-opacity-10">
+      <div className="w-full px-0">
+        <table className="w-full text-white border border-orange-400 rounded-lg bg-orange-600 bg-opacity-10 hss:h-[100px] hss:w-full">
           <tbody>   
             <tr className="border border-orange-400 rounded-lg p-2">
-              <td className="text-center p-3">Last feed:</td>  
-              <td className="text-center p-3 border border-orange-400 rounded-lg">Feeds today</td>
-              <td className="text-center p-3"> Next feed in</td>
+              <td className="text-center p-3 hss:text-sm">Last feed:</td>  
+              <td className="text-center p-3 border border-orange-400 rounded-lg hss:text-sm">Feeds today</td>
+              <td className="text-center p-3 hss:text-sm"> Next feed in</td>
             </tr>
             <tr className="border border-orange-400 rounded-lg p-2">
               <td className="text-center p-3">
@@ -301,12 +298,12 @@ export default function FeederDashboard() {
                   ? new Date(status.lastFeedTime).toLocaleTimeString()
                   : "N/A"}
               </td>
-              <td className="text-center p-3 border border-orange-400 rounded-lg">
+              <td className="text-center p-3 border border-orange-400 rounded-lg hss:text-sm">
                 {status && status.feedsToday != null
                   ? status.feedsToday
                   : "N/A"}
               </td>
-              <td className="text-center p-3">
+              <td className="text-center p-3 hss:text-sm">
                 {nextFeedingInfo
                   ? `${Math.floor(nextFeedingInfo.minutesUntil)} min (${nextFeedingInfo.nextSchedule.time})`
                   : "N/A"}
@@ -317,7 +314,7 @@ export default function FeederDashboard() {
        
 
         {message && (
-          <div className="mt-3 rounded-lg border border-orange-400 bg-orange-600/10 px-4 py-2 text-center text-white">
+          <div className="mt-3 rounded-lg border border-orange-400 bg-orange-600/10 px-4 py-2 text-center text-white hss:text-sm">
             {message}
           </div>
         )}
@@ -326,14 +323,14 @@ export default function FeederDashboard() {
         <button
         onClick={feedNow}
         disabled={loading || !connected}
-        className="bg-orange-500 px-10 py-4 text-white rounded-xl disabled:opacity-50"
+        className="bg-orange-500 px-10 py-4 text-white rounded-xl disabled:opacity-50 md:px-6 md:py-2 hss:text-sm"
       >
         {loading ? "Feeding..." : "Feed now"}
       </button>
       <div className="flex items-center justify-between w-full px-4">
         <div className="flex items-center gap-3">
           <span className="font-semibold flex items-center gap-2">
-            <span className={`text-xl font-bold transition-colors ${
+            <span className={`text-xl font-bold transition-colors hss:text-lg ${
               feedingEnabled ? "text-orange-500" : "text-gray-600"}`}>✓ 
             Feeding {feedingEnabled ? "Enabled" : "Disabled"}</span>
           </span>
@@ -341,19 +338,19 @@ export default function FeederDashboard() {
         <button
           onClick={() => toggleFeeding(!feedingEnabled)}
           disabled={loading || !connected}
-          className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors ${
-            feedingEnabled ? "bg-orange-500" : "bg-gray-600"
+          className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors hss:h-6 hss:w-12 ${
+            feedingEnabled ? "bg-orange-500 " : "bg-gray-600"
           } disabled:opacity-50`}
         >
           <span
-            className={`inline-block h-6 w-6 transform rounded-full bg-white transition-transform ${
-              feedingEnabled ? "translate-x-7" : "translate-x-1"
+            className={`inline-block h-6 w-6 transform rounded-full bg-white transition-transform hss:h-5 hss:w-5 ${
+              feedingEnabled ? "translate-x-7 hss:translate-x-5" : "translate-x-1"
             }`}
           />
 
         </button>
       </div>
-        <div className="flex flex-col gap-2 w-5/6">
+        <div className="flex flex-col gap-2 w-5/6 md:w-full">
           {Array.isArray(schedules) && schedules.map((schedule) => (
             <div
               key={schedule.id}

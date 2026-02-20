@@ -65,3 +65,27 @@ Osnovni nadzorni sistem doma omogoča spremljanje temperature in vlage znotraj i
 ![Posnetek zaslona 2025-06-06 190523](https://github.com/user-attachments/assets/5522a99f-e2dc-422a-ab2e-43e6a8b9701e)
 ![Posnetek zaslona 2025-06-06 185259](https://github.com/user-attachments/assets/44c208c0-7b24-4b7c-9a1f-c85066c4adec)
 
+## Feeder low-fill email alerts
+
+The app now includes a server-side monitor that checks feeder fill level every 60 seconds and sends an email alert when the percentage drops below a configured threshold.
+
+Add these variables to `.env.local`:
+
+- `PI_FEEDER_URL=http://192.168.1.160:8080`
+- `FEEDER_FILL_MAX_CM=450`
+- `FEEDER_FILL_ALERT_THRESHOLD=10`
+- `FEEDER_FILL_ALERT_HOUR=17`
+- `FEEDER_FILL_ALERT_MINUTE=0`
+- `SMTP_HOST=smtp.gmail.com`
+- `SMTP_PORT=465`
+- `SMTP_USER=your-alert-gmail@gmail.com`
+- `SMTP_PASS=your-google-app-password`
+- `EMAIL_FROM=your-alert-gmail@gmail.com`
+- `EMAIL_TO=your@email.com`
+
+Alert behavior:
+
+- Checks once daily at configured time (default 17:00 server local time).
+- Sends email only if percentage is at or below threshold (default 10%).
+- Runs in `src/instrumentation.js` using `checkFeederFillAndAlert()`.
+

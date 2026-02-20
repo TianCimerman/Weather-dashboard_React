@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from 'react';  // Import useState
 import Link from 'next/link';
 
@@ -77,7 +79,7 @@ const handleIframeToggle2 = async () => {
       </nav>
 
 {isIframeVisible && (
-  <div className="absolute top-0 left-0 w-[94.1%] h-screen z-50">
+  <div className="fixed top-0 left-0 w-[94.1%] h-screen z-50">
     <iframe
       src="http://192.168.1.160:3000"
       className="w-[101%] hss:w-[98%] h-full sl:w-[91.5%]"
@@ -91,7 +93,7 @@ const handleIframeToggle2 = async () => {
 
 
 {isIframeVisible2 && (
-  <div className='absolute top-0 left-0 w-[94.6%]  hss:w-[92%] h-full z-50'>
+  <div className='fixed top-0 left-0 w-[94.6%]  hss:w-[92%] h-full z-50'>
     <iframe
       src="http://192.168.1.180/info.htm"
       className="w-[100%] hss:w-[100%] h-full sl:w-[91.5%]"
@@ -103,7 +105,7 @@ const handleIframeToggle2 = async () => {
 )}
 
 {loadingIframe && (
-  <div className="inset-0 z-[999] flex items-center justify-center  bg-opacity-70 absolute top-0 left-0 w-[94.6%] hss:w-[92%] sl:w-[85.5%] h-full z-50" style={{ backgroundColor: 'rgb(48, 57, 70)' }}>
+  <div className="inset-0 z-[999] flex items-center justify-center  bg-opacity-70 fixed top-0 left-0 w-[94.6%] hss:w-[92%] sl:w-[85.5%] h-full z-50" style={{ backgroundColor: 'rgb(48, 57, 70)' }}>
     <div className="text-white text-lg animate-pulse">Loading page...</div>
   </div>
 )}
