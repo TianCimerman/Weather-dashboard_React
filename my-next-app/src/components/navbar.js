@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';  // Import useState
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse } from '@fortawesome/free-solid-svg-icons';
@@ -10,9 +11,17 @@ import { faChartLine } from '@fortawesome/free-solid-svg-icons';
 import { faPaw } from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = () => {
+  const router = useRouter();
   const [isIframeVisible, setIframeVisible] = useState(false);  // Declare state for iframe visibility
   const [isIframeVisible2, setIframeVisible2] = useState(false);  // Declare state for iframe visibility
   const [loadingIframe, setLoadingIframe] = useState(false);
+
+const handleHomeClick = () => {
+  setIframeVisible(false);
+  setIframeVisible2(false);
+  setLoadingIframe(false);
+  router.push('/');
+};
 
 const handleIframeToggle = () => {
   setIframeVisible(!isIframeVisible);
@@ -53,9 +62,9 @@ const handleIframeToggle2 = async () => {
       <nav className="w-[6.5rem] h-full flex flex-col items-center justify-between py-20 pr-2 bg-[#0B121E] text-white">
         <ul className="flex flex-col items-center justify-between h-full">
           <li>
-            <Link href="/" className="hover:text-gray-400">
+            <button onClick={handleHomeClick} className="hover:text-gray-400">
               <FontAwesomeIcon icon={faHouse} className="text-[3.2rem]" />
-            </Link>
+            </button>
           </li>
 
           <li>
