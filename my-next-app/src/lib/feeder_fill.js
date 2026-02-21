@@ -1,4 +1,4 @@
-export const FEEDER_FILL_MAX_CM = 450;
+export const FEEDER_FILL_MAX_CM = 150;
 
 export function normalizeDistanceCm(payload) {
   const rawDistance = payload?.distanceCm ?? payload?.distance;

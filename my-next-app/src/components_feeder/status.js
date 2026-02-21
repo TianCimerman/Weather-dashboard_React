@@ -7,9 +7,28 @@ function humanReason(reason) {
   return String(reason);
 }
 
-function isConnected(heartbeat) {
-  if (!heartbeat) return false;
-  const diff = Date.now() - new Date(heartbeat).getTime();
+function isConnected(statusPayload) {
+  if (!statusPayload || typeof statusPayload !== "object") return false;
+
+  const heartbeat =
+    statusPayload.heartbeat ??
+    statusPayload.lastHeartbeat ??
+    statusPayload.last_heartbeat ??
+    statusPayload.lastSeen ??
+    statusPayload.last_seen ??
+    statusPayload.updatedAt ??
+    statusPayload.updated_at;
+
+  if (!heartbeat) {
+    if (statusPayload.connected === false || statusPayload.online === false) {
+      return false;
+    }
+    return true;
+  }
+
+  const parsedHeartbeat = new Date(heartbeat).getTime();
+  if (Number.isNaN(parsedHeartbeat)) return true;
+  const diff = Date.now() - parsedHeartbeat;
   return diff < 10000; // 10 seconds
 }
 
@@ -130,7 +149,7 @@ export default function FeederDashboard() {
     }
   }, [message]);
 
-  const connected = status ? isConnected(status.heartbeat) : false;
+  const connected = isConnected(status);
 
   const feedNow = async () => {
     setLoading(true);
