@@ -1,16 +1,17 @@
 {
   "scripts": {
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "cd server && npm start",
-    "client": "cd my-next-app && npm run dev"
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+
+    "dev:server": "cd server && npm start",
+    "dev:client": "cd my-next-app && npm run dev",
+
+    "build": "cd my-next-app && npm run build",
+
+    "start": "concurrently \"npm run start:server\" \"npm run start:client\"",
+    "start:server": "cd server && npm start",
+    "start:client": "cd my-next-app && npm start"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"
-  },
-  "dependencies": {
-    "next": "^16.1.1",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
-    "react-toastify": "^11.0.5"
   }
 }
