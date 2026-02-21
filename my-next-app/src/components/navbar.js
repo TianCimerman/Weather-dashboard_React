@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from 'react';  // Import useState
+import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse } from '@fortawesome/free-solid-svg-icons';
@@ -11,32 +11,66 @@ import { faChartLine } from '@fortawesome/free-solid-svg-icons';
 import { faPaw } from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = () => {
-  const router = useRouter();
-  const [isIframeVisible, setIframeVisible] = useState(false);  // Declare state for iframe visibility
-  const [isIframeVisible2, setIframeVisible2] = useState(false);  // Declare state for iframe visibility
+  const pathname = usePathname();
+  const [isIframeVisible, setIframeVisible] = useState(false);
+  const [isIframeVisible2, setIframeVisible2] = useState(false);
   const [loadingIframe, setLoadingIframe] = useState(false);
+  const actionTokenRef = useRef(0);
 
 const handleHomeClick = () => {
+  actionTokenRef.current += 1;
+  const isFeederPage = pathname?.startsWith('/feeder');
+  const hasOpenIframe = isIframeVisible || isIframeVisible2 || loadingIframe;
+
   setIframeVisible(false);
   setIframeVisible2(false);
   setLoadingIframe(false);
-  router.push('/');
+
+  if (isFeederPage) {
+    window.location.replace('/');
+    return;
+  }
+
+  if (hasOpenIframe) {
+    window.location.reload();
+    return;
+  }
+
+  window.location.replace('/');
 };
 
-const handleIframeToggle = () => {
-  setIframeVisible(!isIframeVisible);
+const closeAllIframes = () => {
+  actionTokenRef.current += 1;
+  setIframeVisible(false);
   setIframeVisible2(false);
-  setLoadingIframe(true);
+  setLoadingIframe(false);
+};
+
+useEffect(() => {
+  closeAllIframes();
+}, [pathname]);
+
+const handleIframeToggle = () => {
+  actionTokenRef.current += 1;
+  const nextVisible = !isIframeVisible;
+  setIframeVisible(nextVisible);
+  setIframeVisible2(false);
+  setLoadingIframe(nextVisible);
 };
 
 const handleIframeToggle2 = async () => {
+  const token = actionTokenRef.current + 1;
+  actionTokenRef.current = token;
   setIframeVisible(false);
-  setIframeVisible2(false); // Hide iframe first
-  setLoadingIframe(true);   // Show loader immediately
+  setIframeVisible2(false);
+  setLoadingIframe(true);
 
-  await handleAutoLogin();  // Wait for auto-login to complete
+  await handleAutoLogin();
 
-  // Now show the iframe
+  if (actionTokenRef.current !== token) {
+    return;
+  }
+
   setIframeVisible2(true);
 };
 
@@ -59,10 +93,10 @@ const handleIframeToggle2 = async () => {
 
   return (
     <>
-      <nav className="w-[6.5rem] h-full flex flex-col items-center justify-between py-20 pr-2 bg-[#0B121E] text-white">
+      <nav className="relative z-[1100] w-[6.5rem] h-full flex flex-col items-center justify-between py-20 pr-2 bg-[#0B121E] text-white">
         <ul className="flex flex-col items-center justify-between h-full">
           <li>
-            <button onClick={handleHomeClick} className="hover:text-gray-400">
+            <button onClick={handleHomeClick} className="hover:text-gray-400" type="button">
               <FontAwesomeIcon icon={faHouse} className="text-[3.2rem]" />
             </button>
           </li>
@@ -80,7 +114,7 @@ const handleIframeToggle2 = async () => {
           </li>
 
           <li>
-            <Link href="/feeder" className="hover:text-gray-400">
+            <Link href="/feeder" onClick={closeAllIframes} className="hover:text-gray-400">
               <FontAwesomeIcon icon={faPaw} className="text-[3.2rem]" />
             </Link>
           </li>
@@ -88,10 +122,10 @@ const handleIframeToggle2 = async () => {
       </nav>
 
 {isIframeVisible && (
-  <div className="fixed top-0 left-0 w-[94.1%] h-screen z-50">
+  <div className="pointer-events-none fixed top-0 left-0 right-[6.5rem] h-screen z-50">
     <iframe
       src="http://192.168.1.160:3000"
-      className="w-[101%] hss:w-[98%] h-full sl:w-[91.5%]"
+      className="pointer-events-auto w-full h-full"
       height="100%"
       title="Grafana Dashboard"
       style={{ pointerEvents: 'auto', border: 'none' }}
@@ -102,19 +136,20 @@ const handleIframeToggle2 = async () => {
 
 
 {isIframeVisible2 && (
-  <div className='fixed top-0 left-0 w-[94.6%]  hss:w-[92%] h-full z-50'>
+  <div className='pointer-events-none fixed top-0 left-0 right-[6.5rem] h-full z-50'>
     <iframe
       src="http://192.168.1.180/info.htm"
-      className="w-[100%] hss:w-[100%] h-full sl:w-[91.5%]"
+      className="pointer-events-auto w-full h-full"
       height="100%"
       title="Ventilation Dashboard"
+      style={{ pointerEvents: 'auto', border: 'none' }}
       onLoad={() => setLoadingIframe(false)} // Hide loader when iframe loads
     ></iframe>
   </div>
 )}
 
 {loadingIframe && (
-  <div className="inset-0 z-[999] flex items-center justify-center  bg-opacity-70 fixed top-0 left-0 w-[94.6%] hss:w-[92%] sl:w-[85.5%] h-full z-50" style={{ backgroundColor: 'rgb(48, 57, 70)' }}>
+  <div className="pointer-events-none fixed top-0 left-0 right-[6.5rem] h-full z-[999] flex items-center justify-center bg-opacity-70" style={{ backgroundColor: 'rgb(48, 57, 70)' }}>
     <div className="text-white text-lg animate-pulse">Loading page...</div>
   </div>
 )}
