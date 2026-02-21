@@ -10,7 +10,7 @@ export function normalizeDistanceCm(payload) {
 
 export function calculateFillPercent(distanceCm, maxDistanceCm = FEEDER_FILL_MAX_CM) {
   if (distanceCm == null || maxDistanceCm <= 0) return null;
-  const percent = (distanceCm / maxDistanceCm) * 100;
+  const percent = (1 - distanceCm / maxDistanceCm) * 100;
   return Math.max(0, Math.min(100, Math.round(percent)));
 }
 

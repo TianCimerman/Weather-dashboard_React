@@ -5,6 +5,27 @@ export default function SchedulesEdit() {
   const [schedules, setSchedules] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
+
+  const toSeconds = (durationValue) => {
+    const duration = Number(durationValue);
+    if (!Number.isFinite(duration)) return 2;
+    if (duration > 100) return duration / 1000;
+    return duration;
+  };
+
+  const toMilliseconds = (durationSeconds) => {
+    const seconds = Number(durationSeconds);
+    if (!Number.isFinite(seconds)) return 2000;
+    return Math.round(seconds * 1000);
+  };
+
+  const normalizeApiMessage = (rawMessage) => {
+    const messageText = String(rawMessage || "");
+    if (/between\s*1000\s*and\s*5000\s*ms/i.test(messageText)) {
+      return "Duration must be between 1 and 5 seconds on the feeder service";
+    }
+    return messageText;
+  };
   
   // Form states
   const [formMode, setFormMode] = useState(null); // "add", "edit", or null
@@ -12,7 +33,7 @@ export default function SchedulesEdit() {
   const [formData, setFormData] = useState({
     id: "",
     time: "",
-    duration: 2000,
+    duration: "2",
     enabled: true,
   });
 
@@ -75,10 +96,10 @@ export default function SchedulesEdit() {
       return false;
     }
 
-    // Validate duration 1000-5000 ms
-    const duration = parseInt(formData.duration);
-    if (isNaN(duration) || duration < 1000 || duration > 5000) {
-      setMessage("❌ Duration must be between 1000 and 5000 ms");
+    // Validate duration 1-50 seconds
+    const duration = Number(formData.duration);
+    if (formData.duration === "" || !Number.isFinite(duration) || duration < 1 || duration > 50) {
+      setMessage("❌ Duration must be between 1 and 50 seconds");
       return false;
     }
 
@@ -107,7 +128,7 @@ export default function SchedulesEdit() {
   const handleAddClick = () => {
     setFormMode("add");
     setEditingId(null);
-    setFormData({ id: "", time: "", duration: 2000, enabled: true });
+    setFormData({ id: "", time: "", duration: "2", enabled: true });
     setMessage(null);
   };
 
@@ -117,7 +138,7 @@ export default function SchedulesEdit() {
     setFormData({
       id: schedule.id,
       time: schedule.time,
-      duration: schedule.duration || 2000,
+      duration: String(toSeconds(schedule.duration)),
       enabled: schedule.enabled !== false,
     });
     setMessage(null);
@@ -126,7 +147,7 @@ export default function SchedulesEdit() {
   const handleCancel = () => {
     setFormMode(null);
     setEditingId(null);
-    setFormData({ id: "", time: "", duration: 2000, enabled: true });
+    setFormData({ id: "", time: "", duration: "2", enabled: true });
   };
 
   const handleSubmit = async (e) => {
@@ -141,7 +162,10 @@ export default function SchedulesEdit() {
     try {
       let endpoint = "/api/feeder/schedules";
       let method = "POST";
-      let body = formData;
+      let body = {
+        ...formData,
+        duration: toMilliseconds(formData.duration),
+      };
 
       if (formMode === "edit") {
         endpoint = `/api/feeder/schedules`;
@@ -150,7 +174,7 @@ export default function SchedulesEdit() {
           id: editingId,
           updates: {
             time: formData.time,
-            duration: parseInt(formData.duration),
+            duration: toMilliseconds(formData.duration),
             enabled: formData.enabled,
           },
         };
@@ -290,13 +314,14 @@ export default function SchedulesEdit() {
 
           {/* Duration field */}
           <div className="flex flex-col gap-2">
-            <label className="text-white">Duration (ms: 1000-5000)</label>
+            <label className="text-white">Duration (seconds: 1-50)</label>
             <input
               type="number"
               value={formData.duration}
-              onChange={(e) => setFormData({ ...formData, duration: parseInt(e.target.value) })}
-              min="1000"
-              max="5000"
+              onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
+              min="1"
+              max="50"
+              step="1"
               className="bg-gray-700 text-white px-3 py-2 rounded"
             />
           </div>
@@ -353,7 +378,7 @@ export default function SchedulesEdit() {
               <div className="flex-1">
                 <div className="text-white font-semibold">{schedule.id}</div>
                 <div className="text-gray-400 text-sm">
-                  {schedule.time} • {schedule.duration || 2000}ms •{" "}
+                  {schedule.time} • {toSeconds(schedule.duration)}s •{" "}
                   <span className={schedule.enabled !== false ? "text-green-400" : "text-red-400"}>
                     {schedule.enabled !== false ? "Enabled" : "Disabled"}
                   </span>
