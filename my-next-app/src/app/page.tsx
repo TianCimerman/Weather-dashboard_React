@@ -40,17 +40,14 @@ function App() {
               <Inside_Temp />
             </div>
 
-            <div className="mt-[-10.5rem] hss:mt-[-5.3rem] sl:mt-[-2.5rem] sl:ml-[1rem]">
+            <div className="mt-[-10.5rem] hss:mt-[-5.3rem] sl:mt-[-2.5rem] sl:ml-[1rem] sl:pb-[1rem]">
               <TemperatureGauge />
             </div>
           </div>
         </div>
       </div>
 
-      {/* NAVBAR (right, full height) */}
-      <div className="w-[100px] h-full flex-shrink-0">
-        <Navbar />
-      </div>
+      <Navbar />
     </div>
   );
 }

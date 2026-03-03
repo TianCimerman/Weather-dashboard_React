@@ -66,6 +66,18 @@ body {
     overflow-x: hidden;
     color: white;
   }
+
+  .feeder-page {
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .feeder-page .feeder-main {
+    height: auto;
+    overflow: visible;
+    padding-bottom: 6rem;
+  }
 }
 #custom-gauge {
   z-index: 0;
