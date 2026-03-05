@@ -2,17 +2,17 @@
   "name": "my-next-app",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start -H 0.0.0.0 -p 4000",
-    "lint": "next lint"
-  },
+"scripts": {
+  "dev": "concurrently \"next dev\" \"nodemon server/index.js\"",
+  "build": "next build",
+  "start": "node server/index.js"
+},
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@influxdata/influxdb-client": "^1.35.0",
+    "concurrently": "^9.2.1",
     "lodash": "^4.17.21",
     "next": "13.5.11",
     "nodemailer": "^8.0.1",

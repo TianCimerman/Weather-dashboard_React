@@ -83,7 +83,7 @@ const handleIframeToggle2 = async () => {
 
 
   const handleAutoLogin = async () => {
-    const res = await fetch('http://192.168.1.160:5000/auto-login', {
+    const res = await fetch('/auto-login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ password: 'helios' })
